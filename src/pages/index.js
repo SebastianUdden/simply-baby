@@ -5,9 +5,11 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const IndexPage = () => {
+  const [show, setShow] = useState(false)
   const [patterns, setPatterns] = useState([])
 
   useEffect(() => {
+    setShow(true)
     setPatterns(JSON.parse(localStorage.getItem("baby-patterns")) || [])
   }, [])
 
@@ -20,14 +22,18 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Home" />
-      <BabyPatternTracker
-        patterns={patterns}
-        onUpdatePatterns={babyPatterns => setPatterns(babyPatterns)}
-      />
-      <BabyPatterns
-        patterns={patterns}
-        onDelete={id => setPatterns(patterns.filter(p => p.id !== id))}
-      />
+      {show && (
+        <>
+          <BabyPatternTracker
+            patterns={patterns}
+            onUpdatePatterns={babyPatterns => setPatterns(babyPatterns)}
+          />
+          <BabyPatterns
+            patterns={patterns}
+            onDelete={id => setPatterns(patterns.filter(p => p.id !== id))}
+          />
+        </>
+      )}
     </Layout>
   )
 }
