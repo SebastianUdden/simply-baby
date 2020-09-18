@@ -1,7 +1,11 @@
 import React from "react"
 
 export default ({ fill = "#9eb5b3" }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    max-width="3.5rem"
+  >
     <polygon
       points="50 0, 70 30,100 40,80 65, 80 95, 50 80, 20 95, 20 65, 0 40, 30 30"
       fill={fill}
