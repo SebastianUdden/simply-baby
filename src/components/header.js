@@ -13,7 +13,7 @@ const StarWrapper = styled.span`
   margin-bottom: -0.5rem;
   transform: ${p => `rotate(${p.largeStar ? "1080" : "0"}deg)`};
   transition: ${p =>
-    `transform 20000ms ease-in-out, width ${p.speed}ms ease-in-out`};
+    `transform ${p.speed}ms ease-in-out, width ${p.speed}ms ease-in-out`};
 `
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -22,7 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: color 3000ms ease-in-out;
+  transition: ${p => `color ${p.speed} ease-in-out`};
   :hover {
     color: #efefef;
   }
@@ -34,7 +34,7 @@ const H1 = styled.h1`
 const Header = ({ siteTitle }) => {
   const largeSize = "100%"
   const smallSize = "3.5rem"
-  const speed = 2000
+  const speed = 4000
   const [largeStar, setLargeStar] = useState(false)
   return (
     <Head>
