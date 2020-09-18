@@ -8,9 +8,14 @@ const Summary = styled.div`
   border-radius: 1rem;
   margin-bottom: 1rem;
 `
-const H3 = styled.h3``
+const H3 = styled.h3`
+  margin: 0 0 0.8rem;
+`
 const Sum = styled.p`
   margin: 0.2rem 0;
+`
+const Label = styled.label`
+  opacity: 0.5;
 `
 
 const summarizeValues = values =>
@@ -30,12 +35,24 @@ export default ({ values }) => {
   return (
     <Summary>
       <H3>Summary</H3>
-      <Sum>Total: {formatTime(sum, true)}</Sum>
-      <Sum>Right: {formatTime(rightSum, true)}</Sum>
-      <Sum>Left: {formatTime(leftSum, true)}</Sum>
-      <Sum>Sleep: {formatTime(sleepSum, true)}</Sum>
-      <Sum>Pee: {peeSum} diapers</Sum>
-      <Sum>Poo: {pooSum} diapers</Sum>
+      <Sum>
+        <Label>Total:</Label> {formatTime(sum, true)}
+      </Sum>
+      <Sum>
+        <Label>Right:</Label> {formatTime(rightSum, true)}
+      </Sum>
+      <Sum>
+        <Label>Left:</Label> {formatTime(leftSum, true)}
+      </Sum>
+      <Sum>
+        <Label>Sleep:</Label> {formatTime(sleepSum, true)}
+      </Sum>
+      <Sum>
+        <Label>Pee:</Label> {peeSum} diapers
+      </Sum>
+      <Sum>
+        <Label>Poo:</Label> {pooSum} diapers
+      </Sum>
     </Summary>
   )
 }
