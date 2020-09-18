@@ -2,14 +2,6 @@ import React, { useState } from "react"
 import styled from "styled-components"
 import { formatTime, formatTwoDigits } from "./utils"
 
-const BabyPatterns = styled.div`
-  margin: 1.2rem 0;
-`
-const H2 = styled.h2``
-const UL = styled.ul`
-  list-style: none;
-  margin: 0;
-`
 const LI = styled.li`
   border-bottom: 1px solid #666;
   text-transform: capitalize;
@@ -21,6 +13,7 @@ const LI = styled.li`
 const Column = styled.div``
 const Label = styled.label``
 const Time = styled.span`
+  margin-left: 0.5rem;
   opacity: 0.5;
 `
 const Button = styled.button`
@@ -39,22 +32,7 @@ const getTime = date => {
   const minutes = formatTwoDigits(newDate.getMinutes())
   return `${hours}:${minutes}`
 }
-
-const formatPatterns = patterns => {
-  const reversedPatterns = patterns.slice().reverse()
-  const existingDates = [
-    ...new Set(patterns.map(p => new Date(p.start).toLocaleDateString())),
-  ]
-  const datesWithEntries = existingDates.map(date => ({
-    date,
-    values: reversedPatterns.filter(
-      p => new Date(p.start).toLocaleDateString() === date
-    ),
-  }))
-  return datesWithEntries
-}
-
-const Pattern = ({ id, type, start, end, onDelete }) => {
+export default ({ id, type, start, end, onDelete }) => {
   const [showEditor, setShowEditor] = useState(false)
   const startTime = getTime(start)
   const endTime = getTime(end)
@@ -67,32 +45,10 @@ const Pattern = ({ id, type, start, end, onDelete }) => {
         <Label>{type}</Label>
       </Column>
       <Column>
-        {startTime === endTime ? startTime : `${startTime} - ${endTime}`}{" "}
+        {startTime === endTime ? startTime : `${startTime} - ${endTime}`}
         {difference !== 0 && <Time>({formatTime(difference, true)})</Time>}
         {showEditor && <Button onClick={() => onDelete(id)}>&times;</Button>}
       </Column>
     </LI>
-  )
-}
-
-const Day = ({ date, values, onDelete }) => (
-  <>
-    <H2>{new Date().toLocaleDateString() === date ? "Today" : date}</H2>
-    <UL>
-      {values.map(pattern => (
-        <Pattern {...pattern} onDelete={onDelete} />
-      ))}
-    </UL>
-  </>
-)
-
-export default ({ patterns, onDelete }) => {
-  const formatedPatterns = formatPatterns(patterns)
-  return (
-    <BabyPatterns>
-      {formatedPatterns.map(pattern => (
-        <Day {...pattern} onDelete={onDelete} />
-      ))}
-    </BabyPatterns>
   )
 }

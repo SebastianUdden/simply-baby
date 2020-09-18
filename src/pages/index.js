@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import BabyPatterns from "../components/BabyPatterns"
-import BabyPatternTracker from "../components/BabyPatternTracker"
+import BabyPatterns from "../components/patterns/BabyPatterns"
+import BabyPatternTracker from "../components/patterns/BabyPatternTracker"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
