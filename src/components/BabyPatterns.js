@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import styled from "styled-components"
-import { formatTwoDigits } from "./utils"
+import { formatTime, formatTwoDigits } from "./utils"
 
 const BabyPatterns = styled.div`
   margin: 1.2rem 0;
@@ -58,15 +58,17 @@ const Pattern = ({ id, type, start, end, onDelete }) => {
   const [showEditor, setShowEditor] = useState(false)
   const startTime = getTime(start)
   const endTime = getTime(end)
+  const difference = Math.floor(
+    ((end ? new Date(end) : new Date()) - new Date(start)) / 1000
+  )
   return (
     <LI onClick={() => setShowEditor(!showEditor)}>
       <Column>
         <Label>{type}</Label>
       </Column>
       <Column>
-        <Time>
-          {startTime === endTime ? startTime : `${startTime} - ${endTime}`}
-        </Time>
+        {startTime === endTime ? startTime : `${startTime} - ${endTime}`}{" "}
+        {difference !== 0 && <Time>({formatTime(difference, true)})</Time>}
         {showEditor && <Button onClick={() => onDelete(id)}>&times;</Button>}
       </Column>
     </LI>

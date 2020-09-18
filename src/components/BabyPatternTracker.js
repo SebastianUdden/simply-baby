@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
-import { formatTwoDigits, uuidv4 } from "./utils"
+import { formatTime, uuidv4 } from "./utils"
 
 const BabyPatternTracker = styled.div``
 const Grid = styled.div`
@@ -54,23 +54,13 @@ const getDuration = pattern => {
   return differenceSeconds
 }
 
-const formatTime = seconds => {
-  const minutes = formatTwoDigits(Math.floor(seconds / 60))
-  const hours = Math.floor(minutes / 60)
-  const remainingMinutes = formatTwoDigits(minutes % 60)
-  const remainingSeconds = formatTwoDigits(seconds % 60)
-  if (hours) {
-    return `${formatTwoDigits(hours)}:${remainingMinutes}:${remainingSeconds}`
-  }
-  return `${minutes}:${remainingSeconds}`
-}
-
 const Duration = ({ pattern }) => {
   const [seconds, setSeconds] = useState(getDuration(pattern))
 
   useEffect(() => {
     setTimeout(() => setSeconds(seconds + 1), 1000)
   }, [seconds])
+
   return <Time>{formatTime(seconds)}</Time>
 }
 
