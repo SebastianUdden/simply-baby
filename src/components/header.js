@@ -11,8 +11,9 @@ const StarWrapper = styled.span`
   width: ${p => p.size};
   margin-right: 0.4rem;
   margin-bottom: -0.5rem;
+  transform: ${p => `rotate(${p.largeStar ? "1080" : "0"}deg)`};
   transition: ${p =>
-    `transform 8000ms ease-in-out, width ${p.speed}ms ease-in-out`};
+    `transform 20000ms ease-in-out, width ${p.speed}ms ease-in-out`};
 `
 const Wrapper = styled.div`
   margin: 0 auto;
@@ -24,9 +25,6 @@ const Wrapper = styled.div`
   transition: color 3000ms ease-in-out;
   :hover {
     color: #efefef;
-    ${StarWrapper} {
-      transform: rotate(1080deg);
-    }
   }
 `
 const H1 = styled.h1`
@@ -41,7 +39,11 @@ const Header = ({ siteTitle }) => {
   return (
     <Head>
       <Wrapper onClick={() => setLargeStar(!largeStar)}>
-        <StarWrapper size={largeStar ? largeSize : smallSize} speed={speed}>
+        <StarWrapper
+          size={largeStar ? largeSize : smallSize}
+          speed={speed}
+          largeStar={largeStar}
+        >
           <Star
             fill="#8899bb"
             size={largeStar ? largeSize : smallSize}
