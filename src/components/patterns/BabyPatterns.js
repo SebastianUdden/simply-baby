@@ -20,12 +20,12 @@ const formatPatterns = patterns => {
   return datesWithEntries
 }
 
-export default ({ patterns, onDelete }) => {
+export default ({ patterns, onUpdate, onDelete }) => {
   const formatedPatterns = formatPatterns(patterns)
   return (
     <BabyPatterns>
       {formatedPatterns.map(pattern => (
-        <Day {...pattern} onDelete={onDelete} />
+        <Day {...pattern} onUpdate={onUpdate} onDelete={onDelete} />
       ))}
     </BabyPatterns>
   )

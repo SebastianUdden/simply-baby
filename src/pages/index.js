@@ -30,6 +30,11 @@ const IndexPage = () => {
           />
           <BabyPatterns
             patterns={patterns}
+            onUpdate={pattern =>
+              setPatterns(
+                patterns.map(p => (p.id === pattern.id ? pattern : p))
+              )
+            }
             onDelete={id => setPatterns(patterns.filter(p => p.id !== id))}
           />
         </>

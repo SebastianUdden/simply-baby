@@ -10,13 +10,13 @@ const UL = styled.ul`
   margin: 0;
 `
 
-export default ({ date, values, onDelete }) => (
+export default ({ date, values, onUpdate, onDelete }) => (
   <Day>
     <H2>{new Date().toLocaleDateString() === date ? "Today" : date}</H2>
     <Summary values={values} />
     <UL>
       {values.map(pattern => (
-        <Pattern {...pattern} onDelete={onDelete} />
+        <Pattern {...pattern} onUpdate={onUpdate} onDelete={onDelete} />
       ))}
     </UL>
   </Day>
