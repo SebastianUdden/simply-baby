@@ -4,12 +4,12 @@ import { formatTime } from "./utils"
 
 const Summary = styled.div`
   background-color: #fefefe;
-  padding: 1rem;
+  padding: 0.1rem 1rem 1rem;
   border-radius: 1rem;
   margin-bottom: 1rem;
 `
 const H3 = styled.h3`
-  margin: 0 0 0.8rem;
+  margin: 1rem 0;
 `
 const Sum = styled.p`
   margin: 0.2rem 0;
@@ -28,10 +28,16 @@ const summarizeValues = values =>
 export default ({ values }) => {
   const sum = summarizeValues(values)
   const rightSum = summarizeValues(values.filter(v => v.type === "right"))
+  const rightCount = values.filter(v => v.type === "right").length
+  const rightAverage = Math.round(rightSum / rightCount)
   const leftSum = summarizeValues(values.filter(v => v.type === "left"))
+  const leftCount = values.filter(v => v.type === "left").length
+  const leftAverage = Math.round(leftSum / leftCount)
   const sleepSum = summarizeValues(values.filter(v => v.type === "sleep"))
-  const peeSum = values.filter(v => v.type === "pee").length
-  const pooSum = values.filter(v => v.type === "poo").length
+  const sleepCount = values.filter(v => v.type === "sleep").length
+  const sleepAverage = Math.round(sleepSum / sleepCount)
+  const peeCount = values.filter(v => v.type === "pee").length
+  const pooCount = values.filter(v => v.type === "poo").length
   return (
     <Summary>
       <H3>Summary</H3>
@@ -39,19 +45,29 @@ export default ({ values }) => {
         <Label>Total:</Label> {formatTime(sum, true)}
       </Sum>
       <Sum>
-        <Label>Right:</Label> {formatTime(rightSum, true)}
+        <Label>Right:</Label> {formatTime(rightSum, true)} ({rightCount} times)
       </Sum>
       <Sum>
-        <Label>Left:</Label> {formatTime(leftSum, true)}
+        <Label>Left:</Label> {formatTime(leftSum, true)} ({leftCount} times)
       </Sum>
       <Sum>
-        <Label>Sleep:</Label> {formatTime(sleepSum, true)}
+        <Label>Sleep:</Label> {formatTime(sleepSum, true)} ({sleepCount} times)
       </Sum>
       <Sum>
-        <Label>Pee:</Label> {peeSum} diapers
+        <Label>Pee:</Label> {peeCount} diapers
       </Sum>
       <Sum>
-        <Label>Poo:</Label> {pooSum} diapers
+        <Label>Poo:</Label> {pooCount} diapers
+      </Sum>
+      <H3>Average</H3>
+      <Sum>
+        <Label>Right:</Label> {formatTime(rightAverage, true)}
+      </Sum>
+      <Sum>
+        <Label>Left:</Label> {formatTime(leftAverage, true)}
+      </Sum>
+      <Sum>
+        <Label>Sleep:</Label> {formatTime(sleepAverage, true)}
       </Sum>
     </Summary>
   )
