@@ -22,10 +22,8 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: ${p => `color ${p.speed} ease-in-out`};
-  :hover {
-    color: #efefef;
-  }
+  color: ${p => (p.largeStar ? "#efefef" : "#444")};
+  transition: ${p => `color ${p.speed / 4}ms ease-in`};
 `
 const H1 = styled.h1`
   margin: 0;
@@ -38,7 +36,11 @@ const Header = ({ siteTitle }) => {
   const [largeStar, setLargeStar] = useState(false)
   return (
     <Head>
-      <Wrapper onClick={() => setLargeStar(!largeStar)}>
+      <Wrapper
+        onClick={() => setLargeStar(!largeStar)}
+        largeStar={largeStar}
+        speed={speed}
+      >
         <StarWrapper
           size={largeStar ? largeSize : smallSize}
           speed={speed}

@@ -21,7 +21,7 @@ const formatPatterns = patterns => {
 }
 
 export default ({ patterns, onUpdate, onDelete }) => {
-  const formatedPatterns = formatPatterns(patterns)
+  const formatedPatterns = formatPatterns(patterns).reverse()
   return (
     <BabyPatterns>
       {formatedPatterns.map(pattern => (
