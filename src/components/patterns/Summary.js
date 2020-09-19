@@ -29,13 +29,13 @@ export default ({ values }) => {
   const sum = summarizeValues(values)
   const rightSum = summarizeValues(values.filter(v => v.type === "right"))
   const rightCount = values.filter(v => v.type === "right").length
-  const rightAverage = Math.round(rightSum / rightCount)
+  const rightAverage = Math.round(rightSum / rightCount) || 0
   const leftSum = summarizeValues(values.filter(v => v.type === "left"))
   const leftCount = values.filter(v => v.type === "left").length
-  const leftAverage = Math.round(leftSum / leftCount)
+  const leftAverage = Math.round(leftSum / leftCount) || 0
   const sleepSum = summarizeValues(values.filter(v => v.type === "sleep"))
   const sleepCount = values.filter(v => v.type === "sleep").length
-  const sleepAverage = Math.round(sleepSum / sleepCount)
+  const sleepAverage = Math.round(sleepSum / sleepCount) || 0
   const peeCount = values.filter(v => v.type === "pee").length
   const pooCount = values.filter(v => v.type === "poo").length
   return (
