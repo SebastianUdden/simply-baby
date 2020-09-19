@@ -18,25 +18,47 @@ const Label = styled.label`
   opacity: 0.5;
 `
 
+const getSeconds = ms => Math.floor(ms / 1000)
+
+const getDurationMs = ({ start, end }) =>
+  end ? new Date(end) - new Date(start) : 0
+
 const summarizeValues = values =>
-  Math.floor(
-    values
-      .map(({ start, end }) => (end ? new Date(end) - new Date(start) : 0))
-      .reduce((a, b) => a + b, 0) / 1000
-  )
+  Math.floor(values.reduce((a, b) => a + b, 0) / 1000)
+
+const sortByDuration = (a, b) => {
+  if (a < b) return 1
+  if (a > b) return -1
+  return 0
+}
+
+const getMedian = values =>
+  values.sort(sortByDuration)[Math.round((values.length - 1) / 2)]
 
 export default ({ values }) => {
-  const sum = summarizeValues(values)
+  const sum = summarizeValues(values.map(getDurationMs))
   const sumCount = values.filter(v => v.end).length
-  const rightSum = summarizeValues(values.filter(v => v.type === "right"))
-  const rightCount = values.filter(v => v.type === "right" && v.end).length
+  const rightValues = values
+    .filter(v => v.type === "right" && v.end)
+    .map(getDurationMs)
+  const rightSum = summarizeValues(rightValues)
+  const rightCount = rightValues.length
   const rightAverage = Math.round(rightSum / rightCount) || 0
-  const leftSum = summarizeValues(values.filter(v => v.type === "left"))
-  const leftCount = values.filter(v => v.type === "left" && v.end).length
+  const rightMedian = getMedian(rightValues)
+  const leftValues = values
+    .filter(v => v.type === "left" && v.end)
+    .map(getDurationMs)
+  const leftSum = summarizeValues(leftValues)
+  const leftCount = leftValues.length
   const leftAverage = Math.round(leftSum / leftCount) || 0
-  const sleepSum = summarizeValues(values.filter(v => v.type === "sleep"))
-  const sleepCount = values.filter(v => v.type === "sleep" && v.end).length
+  const leftMedian = getMedian(leftValues)
+  const sleepValues = values
+    .filter(v => v.type === "sleep" && v.end)
+    .map(getDurationMs)
+  const sleepSum = summarizeValues(sleepValues)
+  const sleepCount = sleepValues.length
   const sleepAverage = Math.round(sleepSum / sleepCount) || 0
+  const sleepMedian = getMedian(sleepValues)
   const peeCount = values.filter(v => v.type === "pee").length
   const pooCount = values.filter(v => v.type === "poo").length
 
@@ -90,6 +112,24 @@ export default ({ values }) => {
             {sleepCount > 1 && (
               <Sum>
                 <Label>Sleep:</Label> {formatTime(sleepAverage, true)}
+              </Sum>
+            )}
+            <H3>Median</H3>
+            {rightCount > 1 && (
+              <Sum>
+                <Label>Right:</Label>{" "}
+                {formatTime(getSeconds(rightMedian), true)}
+              </Sum>
+            )}
+            {leftCount > 1 && (
+              <Sum>
+                <Label>Left:</Label> {formatTime(getSeconds(leftMedian), true)}
+              </Sum>
+            )}
+            {sleepCount > 1 && (
+              <Sum>
+                <Label>Sleep:</Label>{" "}
+                {formatTime(getSeconds(getDurationMs(sleepMedian)), true)}
               </Sum>
             )}
           </>
