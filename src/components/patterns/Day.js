@@ -43,7 +43,12 @@ export default ({
           {showEntries && (
             <UL>
               {values.map(pattern => (
-                <Pattern {...pattern} onUpdate={onUpdate} onDelete={onDelete} />
+                <Pattern
+                  key={pattern.id}
+                  {...pattern}
+                  onUpdate={onUpdate}
+                  onDelete={onDelete}
+                />
               ))}
             </UL>
           )}

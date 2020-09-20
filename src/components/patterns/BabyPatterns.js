@@ -70,9 +70,10 @@ export default ({ patterns, onUpdate, onDelete }) => {
           Entries
         </Button>
       </Grid>
-      {formatedPatterns.map((pattern, index) => (
+      {formatedPatterns.map((day, index) => (
         <Day
-          {...pattern}
+          key={day.date}
+          {...day}
           showSummary={showSummary}
           showEntries={showEntries}
           showDate={index === 0}
