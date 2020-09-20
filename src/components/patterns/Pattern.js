@@ -61,6 +61,10 @@ export default ({ id, type, start, end, onUpdate, onDelete }) => {
   )
 
   useEffect(() => {
+    setStartTime(getTime(start))
+  }, [start])
+
+  useEffect(() => {
     if (showEditor) return
     const startTimeIsValid = validate(startTime)
     const endTimeIsValid = validate(endTime)
