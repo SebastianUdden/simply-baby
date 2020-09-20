@@ -129,7 +129,7 @@ export default ({ values }) => {
             {sleepCount > 1 && (
               <Sum>
                 <Label>Sleep:</Label>{" "}
-                {formatTime(getSeconds(getDurationMs(sleepMedian)), true)}
+                {formatTime(getSeconds(sleepMedian), true)}
               </Sum>
             )}
           </>
