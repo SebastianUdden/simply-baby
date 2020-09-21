@@ -73,7 +73,10 @@ export default ({ patterns, onUpdate, onDelete }) => {
 
   const handleUpload = () => {
     navigator.clipboard.readText().then(response => {
-      localStorage.setItem("baby-patterns", response)
+      const userResponse = window.confirm(
+        "Are you sure you want to overwrite the data? This can't be undone!"
+      )
+      if (userResponse) localStorage.setItem("baby-patterns", response)
       window.location.reload()
     })
   }
