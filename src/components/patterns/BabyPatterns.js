@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import Day from "./Day"
+import download from "../../images/download.svg"
+import upload from "../../images/upload.svg"
 
 const BabyPatterns = styled.div`
   margin: 1.2rem 0;
 `
 const H2 = styled.h2`
   margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
+const Column = styled.div``
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -23,7 +30,13 @@ const Button = styled.button`
   opacity: ${p => (p.active ? 1 : 0.5)};
   width: 100%;
 `
-
+const TextButton = styled.button`
+  background-color: inherit;
+  border: none;
+`
+const Img = styled.img`
+  margin: 0;
+`
 const formatPatterns = patterns => {
   const reversedPatterns = patterns.slice().reverse()
   const existingDates = [
@@ -53,9 +66,31 @@ export default ({ patterns, onUpdate, onDelete }) => {
     setShowSummary(true)
   }, [showEntries])
 
+  const handleDownload = () => {
+    const data = localStorage.getItem("baby-patterns")
+    navigator.clipboard.writeText(data)
+  }
+
+  const handleUpload = () => {
+    navigator.clipboard.readText().then(response => {
+      localStorage.setItem("baby-patterns", response)
+      window.location.reload()
+    })
+  }
+
   return (
     <BabyPatterns>
-      <H2>Baby data</H2>
+      <H2>
+        <Column>Baby data</Column>
+        <Column>
+          <TextButton onClick={handleUpload}>
+            <Img src={upload} width="20px" height="20px" />
+          </TextButton>
+          <TextButton onClick={handleDownload}>
+            <Img src={download} width="20px" height="20px" />
+          </TextButton>
+        </Column>
+      </H2>
       <Grid>
         <Button
           onClick={() => setShowSummary(!showSummary)}
