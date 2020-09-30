@@ -34,8 +34,29 @@ const Button = styled.button`
     color: #fefefe;
   }
 `
+const SmallButton = styled(Button)`
+  width: 100%;
+  height: 2rem;
+  font-size: 12px;
+  padding: 0.5rem;
+`
+const FlexWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`
 const WideButton = styled(Button)`
   grid-column: 1 / 4;
+`
+const Input = styled.input`
+  width: 100%;
+  height: 2rem;
+  font-size: 12px;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  color: #444;
+  border: none;
+  outline: none;
+  margin: 0.2rem 0;
 `
 const Label = styled.label`
   display: flex;
@@ -45,6 +66,8 @@ const Label = styled.label`
 
 export default ({ patterns, onUpdatePatterns = () => {} }) => {
   const [active, setActive] = useState("")
+  const [formula, setFormula] = useState("")
+  const [showFormula, setShowFormula] = useState(false)
 
   useEffect(() => {
     const latest = patterns[patterns.length - 1]
@@ -55,12 +78,13 @@ export default ({ patterns, onUpdatePatterns = () => {} }) => {
     }
   }, [patterns])
 
-  const changeActive = (current, immediateEnd) => {
+  const changeActive = (current, immediateEnd, formula) => {
     const newPoint = {
       id: uuidv4(),
       type: current,
       start: new Date(),
       end: immediateEnd ? new Date() : undefined,
+      formula,
     }
     const endedPatterns = patterns.map(bp => {
       if (bp.end) return bp
@@ -70,7 +94,8 @@ export default ({ patterns, onUpdatePatterns = () => {} }) => {
       }
     })
     const isActive = active === current
-    const alwaysCreate = current === "pee" || current === "poo"
+    const alwaysCreate =
+      current === "pee" || current === "poo" || current === "formula"
     const newPatterns = [
       ...endedPatterns,
       (!isActive || alwaysCreate) && newPoint,
@@ -100,6 +125,48 @@ export default ({ patterns, onUpdatePatterns = () => {} }) => {
             <Duration pattern={patterns[patterns.length - 1]} />
           )}
         </Button>
+        <WideButton
+          onClick={() => {
+            setShowFormula(true)
+            setTimeout(() => {
+              document.getElementById("formula-input").focus()
+            }, 100)
+          }}
+          active={active === "formula" || showFormula}
+        >
+          {!showFormula && <span>Formula</span>}
+          {showFormula && (
+            <>
+              <Input
+                id="formula-input"
+                type="number"
+                value={formula}
+                onChange={e => setFormula(e.target.value)}
+              />
+              <FlexWrapper>
+                <SmallButton
+                  onClick={e => {
+                    e.stopPropagation()
+                    changeActive("formula", true, formula)
+                    setShowFormula(false)
+                    setFormula("")
+                  }}
+                >
+                  Add
+                </SmallButton>
+                <SmallButton
+                  onClick={e => {
+                    e.stopPropagation()
+                    setShowFormula(false)
+                    setFormula("")
+                  }}
+                >
+                  Cancel
+                </SmallButton>
+              </FlexWrapper>
+            </>
+          )}
+        </WideButton>
         <WideButton
           onClick={() => changeActive("sleep")}
           active={active === "sleep"}

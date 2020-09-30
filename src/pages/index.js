@@ -15,7 +15,7 @@ const IndexPage = () => {
 
   useEffect(() => {
     if (!patterns || !patterns.length) return
-
+    console.log({ patterns })
     localStorage.setItem("baby-patterns", JSON.stringify(patterns))
   }, [patterns])
 

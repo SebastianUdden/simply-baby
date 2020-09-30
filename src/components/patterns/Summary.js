@@ -61,6 +61,14 @@ export default ({ values }) => {
   const feedingAverage = getAverage(feedingSum, feedingCount)
   const feedingMedian = getMedian(feedingValues)
   const sumCount = values.filter(v => v.end).length
+  const formulaValues = values
+    .filter(v => v.type === "formula" && v.end)
+    .map(v => +v.formula || false)
+    .filter(Boolean)
+  const formulaSum = formulaValues.reduce((a, b) => a + b, 0)
+  const formulaCount = formulaValues.length
+  const formulaAverage = getAverage(formulaSum, formulaCount)
+  const formulaMedian = getMedian(formulaValues)
   const rightValues = values
     .filter(v => v.type === "right" && v.end)
     .map(getDurationMs)
@@ -111,6 +119,11 @@ export default ({ values }) => {
             times)
           </Sum>
         )}
+        {formulaSum !== 0 && (
+          <Sum>
+            <Label>Formula:</Label> {formulaSum}ml ({formulaCount})
+          </Sum>
+        )}
         {timeBetweenFeedingSum !== 0 && (
           <Sum>
             <Label>Between feeding:</Label>{" "}
@@ -152,6 +165,11 @@ export default ({ values }) => {
                 <Label>Right:</Label> {formatTime(rightAverage, true)}
               </Sum>
             )}
+            {formulaCount > 1 && (
+              <Sum>
+                <Label>Formula:</Label> {formulaAverage}
+              </Sum>
+            )}
             {timeBetweenFeedingCount > 1 && (
               <Sum>
                 <Label>Between feeding:</Label>{" "}
@@ -179,6 +197,11 @@ export default ({ values }) => {
               <Sum>
                 <Label>Right:</Label>{" "}
                 {formatTime(getSeconds(rightMedian), true)}
+              </Sum>
+            )}
+            {formulaCount > 1 && (
+              <Sum>
+                <Label>Formula:</Label> {formulaMedian}
               </Sum>
             )}
             {timeBetweenFeedingCount > 1 && (

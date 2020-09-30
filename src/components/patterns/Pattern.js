@@ -17,7 +17,9 @@ const RightColumn = styled(Column)`
   width: 100%;
   justify-content: flex-end;
 `
-const Label = styled.label``
+const Label = styled.label`
+  margin-right: 0.5rem;
+`
 const Time = styled.span`
   margin-left: 0.5rem;
   opacity: 0.5;
@@ -31,7 +33,7 @@ const Button = styled.button`
   line-height: 1rem;
 `
 const Input = styled.input`
-  width: 6rem;
+  width: ${p => p.width || "4.5rem"};
   border: none;
   margin-left: 0.4rem;
   padding: 0 0.4rem;
@@ -52,10 +54,12 @@ const validate = time => {
   if (results[0].length === 2 && results[1].length === 2) return true
 }
 
-export default ({ id, type, start, end, onUpdate, onDelete }) => {
+export default ({ id, type, start, end, formula, onUpdate, onDelete }) => {
+  const [initalized, setInitialized] = useState(false)
   const [showEditor, setShowEditor] = useState(false)
   const [startTime, setStartTime] = useState(getTime(start))
   const [endTime, setEndTime] = useState(getTime(end))
+  const [newFormula, setNewFormula] = useState(formula)
   const difference = Math.floor(
     ((end ? new Date(end) : new Date()) - new Date(start)) / 1000
   )
@@ -66,6 +70,10 @@ export default ({ id, type, start, end, onUpdate, onDelete }) => {
 
   useEffect(() => {
     if (showEditor) return
+    if (!initalized) {
+      setInitialized(true)
+      return
+    }
     const startTimeIsValid = validate(startTime)
     const endTimeIsValid = validate(endTime)
     const newStart = new Date(start)
@@ -76,7 +84,14 @@ export default ({ id, type, start, end, onUpdate, onDelete }) => {
     newEnd.setHours(endTime.split(":")[0])
     const endAfterStart = newEnd - newStart > -1
     if (startTimeIsValid && endTimeIsValid && endAfterStart) {
-      onUpdate({ id, type, start: newStart, end: newEnd })
+      const newPoint = {
+        id,
+        type,
+        start: newStart,
+        end: newEnd,
+        formula: newFormula,
+      }
+      onUpdate(newPoint)
       return
     }
     setStartTime(getTime(start))
@@ -86,7 +101,15 @@ export default ({ id, type, start, end, onUpdate, onDelete }) => {
   return (
     <LI>
       <Column onClick={() => setShowEditor(!showEditor)}>
-        <Label>{type}</Label>
+        <Label>{type}</Label> {!showEditor && formula && `(${formula}ml)`}{" "}
+        {showEditor && formula && (
+          <Input
+            type="number"
+            value={newFormula}
+            onClick={e => e.stopPropagation()}
+            onChange={e => setNewFormula(e.target.value)}
+          />
+        )}
       </Column>
       {showEditor && (
         <RightColumn onClick={() => setShowEditor(false)}>
