@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
-import BabyPatterns from "../components/patterns/BabyPatterns"
+
 import BabyPatternTracker from "../components/patterns/BabyPatternTracker"
+import BabyPatterns from "../components/patterns/BabyPatterns"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
@@ -10,13 +11,16 @@ const IndexPage = () => {
 
   useEffect(() => {
     setShow(true)
-    setPatterns(JSON.parse(localStorage.getItem("baby-patterns")) || [])
+    const today = new Date().toLocaleDateString()
+    setPatterns(
+      JSON.parse(localStorage.getItem(`baby-patterns-${today}`)) || []
+    )
   }, [])
 
   useEffect(() => {
     if (!patterns || !patterns.length) return
-    console.log({ patterns })
-    localStorage.setItem("baby-patterns", JSON.stringify(patterns))
+    const today = new Date().toLocaleDateString()
+    localStorage.setItem(`baby-patterns-${today}`, JSON.stringify(patterns))
   }, [patterns])
 
   return (
